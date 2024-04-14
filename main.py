@@ -11,3 +11,4 @@ with open('booking.txt', 'r', encoding='utf8') as f_booknig:
         visitors = visitors.strip().split(' ')
         name = visitors[1] + visitors[2] + visitors[3]
         booking = hotel.Hotel(visitors[0], name, visitors[4], visitors[5], visitors[6], visitors[7])
+

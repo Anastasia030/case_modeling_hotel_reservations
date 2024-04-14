@@ -47,3 +47,14 @@ class PlacementOption(Hotel):
         self.maximum_room_capacity = maximum_room_capacity
         self.degree_comfort = degree_comfort
 
+
+class BookingRequest:
+    probability_failure = [1, 0, 0, 0]
+
+    def __init__(self, booking_date, name, quantity_people, check_in_date, quantity_days, acceptable_price):
+        self.booking_date = booking_date
+        self.name = name
+        self.quantity_people = quantity_people
+        self.check_in_date = check_in_date
+        self.quantity_days = quantity_days
+        self.acceptable_price = acceptable_price
