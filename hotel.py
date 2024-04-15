@@ -27,7 +27,7 @@ class Hotel:
         print(f'-----Отчет рабочего дня {Hotel.current_date} -----')
         print(f'Количество занятых номеров: {occupied_rooms}')
         print(f'Количество свободных номеров: {free_rooms}')
-        print(f'Процент загруженности отдельных категорий номеров: {}')
+        print(f'Процент загруженности отдельных категорий номеров: ')
         print(f'Процент загруженности гостиницы в целом: {occupied_rooms / (free_rooms + occupied_rooms) * 100} %')
         print(f'Полученный доход за день: {Hotel.day_revenue}')
         print(f'Упущенный доход: {Hotel.lost_revenue}')
