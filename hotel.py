@@ -87,9 +87,10 @@ class BookingRequest:
         else:
             if random.choice(BookingRequest.probability_failure) == 0:
                 Hotel.day_revenue += best_option.finding_option()[-1]
+                Hotel.occupancy_rooms[best_option.finding_option()[0]].append(self.living_days)
                 return f'Подобранный номер: {best_option.finding_option()}'
             else:
                 Hotel.lost_revenue += self.acceptable_price
-                return 'Гость отказался от брони'
+                return 'Гость сам отказался от своей брони'
 
 
