@@ -16,12 +16,20 @@ class Hotel:
 
     @staticmethod
     def day_report():
+        free_rooms = 0
+        occupied_rooms = 0
+        for key in Hotel.occupancy_rooms:
+            if int(Hotel.current_date[:2]) not in Hotel.occupancy_rooms[key]:
+                free_rooms += 1
+            else:
+                occupied_rooms += 1
+
         print(f'-----Отчет рабочего дня {Hotel.current_date} -----')
-        print('Количество занятых номеров: ')
-        print('Количество свободных номеров: ')
-        print('Процент загруженности отдельных категорий номеров: ')
-        print('Процент загруженности гостиницы в целом: ')
-        print('Полученный доход за день: ')
+        print(f'Количество занятых номеров: {occupied_rooms}')
+        print(f'Количество свободных номеров: {free_rooms}')
+        print(f'Процент загруженности отдельных категорий номеров: {}')
+        print(f'Процент загруженности гостиницы в целом: {occupied_rooms / (free_rooms + occupied_rooms) * 100} %')
+        print(f'Полученный доход за день: {Hotel.day_revenue}')
         print(f'Упущенный доход: {Hotel.lost_revenue}')
         print('\n')
 
