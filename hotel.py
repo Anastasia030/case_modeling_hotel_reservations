@@ -3,9 +3,9 @@ import ru_local as ru
 
 
 class Hotel:
-    room_rate = {'одноместный': 2900, 'двухместный': 2300, 'полулюкс': 3200, 'люкс': 4100}
-    coefficient_increase = {'стандарт': 1, 'стандарт_улучшенный': 1.2, 'апартамент': 1.5}
-    type_nutrition = {'Без питания': 0, 'Завтрак': 2800, 'Полупансион': 1000}
+    room_rate = {ru.SINGLEROOM: 2900, ru.DOUBLEROOM: 2300, ru.JUNIOR_SUITE: 3200, ru.LUXURY: 4100}
+    coefficient_increase = {ru.STANDART: 1, ru.STANDART_IMPROVED: 1.2, ru.APARTMENT: 1.5}
+    type_nutrition = {ru.WITHOUT_POWER: 0, ru.BREAKFAST: 2800, ru.HALF_BOARD: 1000}
     rooms_catalog = {}
     occupancy_rooms = {}
     current_date = ''
@@ -25,10 +25,10 @@ class Hotel:
             else:
                 occupied_rooms += 1
 
-        print(f'----- Отчет рабочего дня {Hotel.current_date} -----')
-        print(f'Количество занятых номеров: {occupied_rooms}')
-        print(f'Количество свободных номеров: {free_rooms}')
-        print(f'Процент загруженности отдельных категорий номеров: ')
+        print(f'----- {ru.BUSINESS_DAY_REPORT} {Hotel.current_date} -----')
+        print(f'{ru.NUMBER_OCCUPIED_ROOMS} {occupied_rooms}')
+        print(f'{ru.NUMBER_AVAILBLE_ROOMS} {free_rooms}')
+        print(f'{ru.PERCENTAGE_OCCUPANCY_TYPE_ROOMS} ')
 
         for key in Hotel.room_rate:
             total = 0
@@ -40,7 +40,7 @@ class Hotel:
                         occpd += 1
                     else:
                         total += 1
-            print(f"Загруженность номеров типа '{key}' - {round(occpd/total * 100, 2)} %")
+            print(f"{ru.OCCUPANCY_TYPE_ROOMS} '{key}' - {round(occpd/total * 100, 2)} %")
 
         for key in Hotel.coefficient_increase:
             total = 0
@@ -52,11 +52,11 @@ class Hotel:
                         occpd += 1
                     else:
                         total += 1
-            print(f"Загруженность номеров степени комфорта '{key}' - {round(occpd/total * 100, 2)} %")
+            print(f"{ru.OCCUPANCY_DEGREE_ROOMS} '{key}' - {round(occpd/total * 100, 2)} %")
 
-        print(f'Процент загруженности гостиницы в целом: {round(occupied_rooms / (free_rooms + occupied_rooms) * 100, 2)} %')
-        print(f'Полученный доход за день: {Hotel.day_revenue}')
-        print(f'Упущенный доход: {Hotel.lost_revenue}')
+        print(f'{ru.PERCENTAGE_OCCUPANCY_HOTEL} {round(occupied_rooms / (free_rooms + occupied_rooms) * 100, 2)} %')
+        print(f'{ru.INCOME_DAY} {Hotel.day_revenue}')
+        print(f'{ru.LOST_INCOME} {Hotel.lost_revenue}')
         print('\n')
 
     @staticmethod
@@ -128,7 +128,7 @@ class PlacementOption:
 
 
 class BookingRequest:
-    quantity = {'1': 'один', '2': 'два', '3': 'три', '4': 'четыре', '5': 'пять', '6': 'шесть', '7': 'семь'}
+    quantity = {'1': ru.ONE, '2': ru.TWO, '3': ru.THREE, '4': ru.FOUR, '5': ru.FIVE, '6': ru.SIX, '7': ru.SEVEN}
     probability_failure = [1, 0, 0, 0]
 
     def __init__(self, booking_date, name, quantity_people, check_in_date, quantity_days, acceptable_price):
@@ -141,36 +141,37 @@ class BookingRequest:
         self.living_days = list(range(int(check_in_date[:2]), int(check_in_date[:2]) + int(quantity_days)))
         self.living_month = check_in_date[2:]
         self.living_dates = []
-        for elem in self.living_days:       # ???7
+        for elem in self.living_days:
             self.living_dates.append(str(elem) + self.living_month)
 
     def __str__(self):
         return f""" \n
-        Заявка на бронь:
-Имя: {self.name}
-Дата бронирования - {self.booking_date}
-Будет заселено человек: {BookingRequest.quantity[self.quantity_people]} 
-на {BookingRequest.quantity[self.quantity_days]} дня: {self.living_dates}
-Максимальный допустимый расход {self.acceptable_price} руб. на одного человека. \n"""
+        {ru.BOOKING_REQUEST}
+{ru.NAME} {self.name}
+{ru.BOOKING_DATE} - {self.booking_date}
+{ru.BOOKING_PEOPLE} {BookingRequest.quantity[self.quantity_people]}
+{ru.DAY_BOOKED} {BookingRequest.quantity[self.quantity_days]}
+{ru.ON} {ru.DATE} {self.living_dates}
+{ru.MAX_CONSUMPTION} {self.acceptable_price} {ru.RUB} \n"""
 
     def choosing_option(self):
         best_option = PlacementOption(self.quantity_people, self.living_days, self.acceptable_price)
         result = best_option.finding_option()
         if result is None:
             Hotel.lost_revenue += int(self.acceptable_price)
-            return 'Нет подходящего номера \n'
+            return f'{ru.NO_SUITEBLE_NUMBER} \n'
         else:
             if random.choice(BookingRequest.probability_failure) == 0:
                 Hotel.day_revenue += result[4]
                 Hotel.occupancy_rooms[result[0]].extend(self.living_days)
-                return f'''Подобранный номер: {result[0]} 
-Параметры: - {result[1]}
+                return f'''{ru.SELECTED_NUMBER} {result[0]} 
+{ru.PARAMETERS} - {result[1]}
            - {result[2]}
            - {result[3]}
-Стоимость: {result[4]} 
+{ru.COST} {result[4]} 
 
-Гость подтвердил бронь. \n'''
+{ru.QUEST_CONFIRMED_RESERVATION} \n'''
 
             else:
                 Hotel.lost_revenue += int(self.acceptable_price)
-                return 'Гость сам отказался от своей брони \n'
+                return f'{ru.QUEST_REFUSED} \n'
