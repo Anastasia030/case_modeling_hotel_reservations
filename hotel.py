@@ -1,4 +1,5 @@
 import random
+import ru_local as ru
 
 
 class Hotel:
@@ -173,5 +174,3 @@ class BookingRequest:
             else:
                 Hotel.lost_revenue += int(self.acceptable_price)
                 return 'Гость сам отказался от своей брони \n'
-
-
