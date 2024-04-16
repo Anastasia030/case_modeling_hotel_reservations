@@ -18,6 +18,7 @@ class Hotel:
     def day_report():
         free_rooms = 0
         occupied_rooms = 0
+        print(Hotel.occupancy_rooms)
         for key in Hotel.occupancy_rooms:
             if int(Hotel.current_date[:2]) not in Hotel.occupancy_rooms[key]:
                 free_rooms += 1
@@ -129,19 +130,21 @@ class BookingRequest:
 
     def choosing_option(self):
         best_option = PlacementOption(self.quantity_people, self.living_days, self.acceptable_price)
-        best_option.finding_option()
-        if best_option.finding_option() is None:
+        result = best_option.finding_option()
+        if result is None:
             Hotel.lost_revenue += int(self.acceptable_price)
             return 'Нет подходящего номера'
         else:
             if random.choice(BookingRequest.probability_failure) == 0:
-                Hotel.day_revenue += best_option.finding_option()[4]
-                Hotel.occupancy_rooms[best_option.finding_option()[0]].append(self.living_days)
-                return f'''Подобранный номер: {best_option.finding_option()[0]} 
-Параметры: - {best_option.finding_option()[1]}
-           - {best_option.finding_option()[2]}
-           - {best_option.finding_option()[3]}
-Стоимость: {best_option.finding_option()[4]} \n'''
+                Hotel.day_revenue += result[4]
+                Hotel.occupancy_rooms[result[0]].extend(self.living_days)
+                return f'''Подобранный номер: {result[0]} 
+Параметры: - {result[1]}
+           - {result[2]}
+           - {result[3]}
+Стоимость: {result[4]} 
+
+Гость подтвердил бронь. \n'''
 
             else:
                 Hotel.lost_revenue += int(self.acceptable_price)
