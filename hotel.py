@@ -18,7 +18,6 @@ class Hotel:
     def day_report():
         free_rooms = 0
         occupied_rooms = 0
-        print(Hotel.occupancy_rooms)
         for key in Hotel.occupancy_rooms:
             if int(Hotel.current_date[:2]) not in Hotel.occupancy_rooms[key]:
                 free_rooms += 1
@@ -29,7 +28,32 @@ class Hotel:
         print(f'Количество занятых номеров: {occupied_rooms}')
         print(f'Количество свободных номеров: {free_rooms}')
         print(f'Процент загруженности отдельных категорий номеров: ')
-        print(f'Процент загруженности гостиницы в целом: {occupied_rooms / (free_rooms + occupied_rooms) * 100} %')
+
+        for key in Hotel.room_rate:
+            total = 0
+            occpd = 0
+            for j in Hotel.rooms_catalog:
+                if key in Hotel.rooms_catalog[j]:
+                    if int(Hotel.current_date[:2]) in Hotel.occupancy_rooms[j]:
+                        total += 1
+                        occpd += 1
+                    else:
+                        total += 1
+            print(f"Загруженность номеров типа '{key}' - {round(occpd/total * 100, 2)} %")
+
+        for key in Hotel.coefficient_increase:
+            total = 0
+            occpd = 0
+            for j in Hotel.rooms_catalog:
+                if key in Hotel.rooms_catalog[j]:
+                    if int(Hotel.current_date[:2]) in Hotel.occupancy_rooms[j]:
+                        total += 1
+                        occpd += 1
+                    else:
+                        total += 1
+            print(f"Загруженность номеров степени комфорта '{key}' - {round(occpd/total * 100, 2)} %")
+
+        print(f'Процент загруженности гостиницы в целом: {round(occupied_rooms / (free_rooms + occupied_rooms) * 100, 2)} %')
         print(f'Полученный доход за день: {Hotel.day_revenue}')
         print(f'Упущенный доход: {Hotel.lost_revenue}')
         print('\n')
@@ -133,7 +157,7 @@ class BookingRequest:
         result = best_option.finding_option()
         if result is None:
             Hotel.lost_revenue += int(self.acceptable_price)
-            return 'Нет подходящего номера'
+            return 'Нет подходящего номера \n'
         else:
             if random.choice(BookingRequest.probability_failure) == 0:
                 Hotel.day_revenue += result[4]
@@ -148,6 +172,6 @@ class BookingRequest:
 
             else:
                 Hotel.lost_revenue += int(self.acceptable_price)
-                return 'Гость сам отказался от своей брони'
+                return 'Гость сам отказался от своей брони \n'
 
 
