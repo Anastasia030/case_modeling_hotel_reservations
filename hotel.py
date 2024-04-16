@@ -320,7 +320,9 @@ class BookingRequest:
         Determines and prints the hotel offer in response to the customer's request and notices whether
         the booking has been confirmed or withdrawn.
 
-        :return: str
+        :return: The hotel offer in response to the customer's request and a notice whether the booking has been
+        confirmed or withdrawn.
+        :rtype: str
         """
 
         best_option = PlacementOption(self.quantity_people, self.living_days, self.acceptable_price)
