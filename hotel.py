@@ -214,7 +214,7 @@ class PlacementOption:
                 elif not found_option:
                     if int(Hotel.rooms_catalog[key][1]) - int(self.guest_quantity) == 1:
                         required_amount = Hotel.room_rate[Hotel.rooms_catalog[key][0]] * \
-                                          Hotel.coefficient_increase[Hotel.rooms_catalog[key][2]] * 0.7
+                                          Hotel.coefficient_increase[Hotel.rooms_catalog[key][2]]
                         if required_amount <= int(self.max_price):
                             remain = int(self.max_price) - required_amount
                             nutrition = ''
@@ -232,11 +232,9 @@ class PlacementOption:
 
         if len(found_option) != 0:
             found_option = found_option[0]
-
-        if len(found_option) == 0:
-            return None
-        else:
             return found_option
+        else:
+            return None
 
 
 class BookingRequest:
