@@ -214,7 +214,7 @@ class PlacementOption:
                 elif not found_option:
                     if int(Hotel.rooms_catalog[key][1]) - int(self.guest_quantity) == 1:
                         required_amount = Hotel.room_rate[Hotel.rooms_catalog[key][0]] * \
-                                          Hotel.coefficient_increase[Hotel.rooms_catalog[key][2]]
+                                          Hotel.coefficient_increase[Hotel.rooms_catalog[key][2]] * 0.7
                         if required_amount <= int(self.max_price):
                             remain = int(self.max_price) - required_amount
                             nutrition = ''
